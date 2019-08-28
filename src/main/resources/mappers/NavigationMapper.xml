@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.INavigationMapper">
+    <resultMap id="navMap" type="com.vip.project.domain.vo.NavigationVo">
+        <id property="navId" column="nav_id"/>
+        <result property="navName" column="nav_name"/>
+        <association property="navMenuList" resultMap="com.vip.project.mapper.INavMenuMapper.navMenuMap"/>
+    </resultMap>
+
+<!--    导航及导航下拉菜单商品-->
+    <select id="findAllNav" resultMap="navMap">
+        select n.nav_name , n.nav_id , nm.shop_id , nm.menu_img , nm.menu_name , nm.menu_price
+        from navigation n
+        left join nav_menu nm on n.nav_id = nm.nav_id
+        where n.status = 1 and nm.status = 1
+    </select>
+</mapper>

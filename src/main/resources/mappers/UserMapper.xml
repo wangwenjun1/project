@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.IUserMapper">
+
+    <resultMap id="userMap" type="com.vip.project.domain.entity.User">
+        <id property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <resultMap id="userVoMap" type="com.vip.project.domain.vo.UserVo">
+        <id property="uid" column="uid"/>
+        <result property="username" column="username"/>
+        <collection property="shopcarList" resultMap="com.vip.project.mapper.IShopcarMapper.shopCarmapper"/>
+    </resultMap>
+<!--    根据用户uid查询购物车信息-->
+    <select id="findAllUser" resultMap="userVoMap">
+        select u.username , u.uid , sc.shop_id , sc.number , sc.car_id , s.shop_name ,
+        s.promote_price , s.shop_msg
+        from user u
+        left join shop_car sc on sc.uid = u.uid
+        left join shop s on s.shop_id = sc.shop_id
+        where u.uid = #{uid} and u.status = 1 and sc.status = 1 and s.status = 1
+    </select>
+<!--    根据uid查询用户信息-->
+    <select id="findUser" resultMap="userMap">
+        select u.username , u.password
+        from user u
+        where u.status = 1 and u.uid = #{uid}
+    </select>
+
+<!--    添加用户信息-->
+    <insert id="addUser">
+        insert into user (username , password , email)
+        values (#{username} , #{password} , #{email})
+    </insert>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.ICategoryMapper">
+  <resultMap id="cateMap" type="com.vip.project.domain.vo.CategoryVo">
+    <id property="cateId" column="cate_id"/>
+    <result property="cateName" column="cate_name"/>
+    <collection property="shopList" resultMap="com.vip.project.mapper.IShopMapper.shopMap"/>
+  </resultMap>
+
+<!--  商品总类及所有商品-->
+  <select id="findAllCate" resultMap="cateMap">
+        select c.cate_id , c.cate_name , s.shop_id , s.original_price ,
+               s.promote_price , s.shop_name , s.title , s.shop_msg , si.shop_img_id , si.shop_img
+        from category c
+        left join shop s on c.cate_id = s.cate_id
+        left join shop_image si on s.shop_id = si.shop_id
+        where s.status = 1 and c.status = 1 and si.status = 1
+  </select>
+</mapper>

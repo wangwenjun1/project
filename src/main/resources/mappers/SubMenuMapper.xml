@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.ISubMenuMapper">
+    <resultMap id="subMenuMap" type="com.vip.project.domain.vo.SubMenuVo">
+        <id property="subMenuId" column="sub_menu_id"/>
+        <result property="subName" column="sub_name"/>
+        <collection property="subMenu1List" resultMap="com.vip.project.mapper.ISubMenu1Mapper.subMenu1Map"/>
+    </resultMap>
+
+<!--    分类的一级菜单和二级菜单-->
+    <select id="findAllSubMenu" resultMap="subMenuMap">
+        select sm.sub_name ,  sm.sub_menu_id , s.sub_menu1_image , s.sub_name1 , s.shop_id
+        from sub_menu sm
+        left join sub_menu1 s on sm.sub_menu_id = s.sub_menu_id
+        where sm.status = 1 and s.status = 1
+    </select>
+</mapper>

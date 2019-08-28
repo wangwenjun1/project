@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.IShopcarMapper">
+  <resultMap id="shopCarmapper" type="com.vip.project.domain.vo.ShopCarVo">
+    <id property="carId" column="car_id"/>
+    <result property="number" column="number"/>
+    <result property="shopId" column="shop_id"/>
+    <result property="uid" column="uid"/>
+    <association property="shop" resultMap="com.vip.project.mapper.IShopMapper.shopMap"/>
+  </resultMap>
+
+<!--  查询单个购物车商品-->
+  <select id="findCarByUidShopId" resultMap="shopCarmapper">
+    select sc.number , sc.uid , sc.shop_id , s.shop_msg ,s.promote_price , s.shop_name
+    from shop_car sc
+    left join shop s on s.shop_id = sc.shop_id
+    where sc.uid = #{uid} and sc.shop_id = #{shopId} and sc.status = 1 and s.status = 1
+  </select>
+
+<!--   添加新的购物车商品信息-->
+  <insert id="carAdd">
+    insert into shop_car (uid , shop_id , number)
+    values (#{uid} , #{shopId} , #{number})
+  </insert>
+
+<!--  当添加购物车商品已存在时修改商品数量的数据库更新操作-->
+  <update id="carUpdateAdd">
+    update shop_car  sc
+    set sc.number = sc.number + #{number}
+    where  sc.uid = #{uid} and sc.shop_id = #{shopId}
+  </update>
+
+<!--  根据按键修改当前购物车商品的购买数量-->
+  <update id="carUpdate">
+    update shop_car c
+    <set>
+      <if test="op == 1 and op != null">
+        c.number = c.number + 1
+      </if>
+      <if test="op == 2 and op != null">
+        c.number = c.number - 1
+      </if>
+    </set>
+    where c.car_id = #{carId} and c.status = 1
+  </update>
+
+<!--  删除购物车商品-->
+  <update id="carDelete">
+    update shop_car c
+    set c.status = 0
+    where c.status = 1 and c.car_id = #{carId}
+  </update>
+</mapper>

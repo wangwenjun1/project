@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.INavMenuMapper">
+    <resultMap id="navMenuMap" type="com.vip.project.domain.entity.NavMenu">
+        <id property="menuId" column="menu_id"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="menuName" column="menu_name"/>
+        <result property="menuPrice" column="menu_price"/>
+        <result property="menuImg" column="menu_img"/>
+    </resultMap>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.IShopMapper">
+    <resultMap id="shopMap" type="com.vip.project.domain.vo.ShopVo">
+        <id property="shopId" column="shop_id"/>
+        <result property="shopName" column="shop_name"/>
+        <result property="cateId" column="cate_id"/>
+        <result property="title" column="title"/>
+        <result property="promotePrice" column="promote_price"/>
+        <result property="originalPrice" column="original_price"/>
+        <result property="shopMsg" column="shop_msg"/>
+        <association property="shopImage" resultMap="com.vip.project.mapper.IShopImageMapper.shopImageMap"/>
+    </resultMap>
+
+<!--    所有商品-->
+    <select id="findAllShop" resultMap="shopMap">
+        select s.shop_name , s.shop_msg , s.original_price , s.promote_price , s.title , si.shop_img
+        from shop s
+        left join shop_image si on s.shop_id = si.shop_id
+        where s.status = 1;
+    </select>
+
+<!--    模糊查询商品-->
+    <select id="findShops" resultMap="shopMap">
+        select s.shop_name , s.shop_msg , s.original_price , s.promote_price , si.shop_img
+        from shop s
+        left join shop_image si on s.shop_id = si.shop_id
+        where s.status = 1 and s.shop_name like concat('%' , #{keyword} , '%')
+        limit #{page} , 20
+    </select>
+</mapper>

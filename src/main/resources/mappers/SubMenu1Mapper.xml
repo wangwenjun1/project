@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.project.mapper.ISubMenu1Mapper">
+    <resultMap id="subMenu1Map" type="com.vip.project.domain.entity.SubMenu1">
+        <id property="subMenu1Id" column="sub_menu1_id"/>
+        <result property="shopId" column="shop_id"/>
+        <result property="subMenu1Image" column="sub_menu1_image"/>
+        <result property="subName1" column="sub_name1"/>
+    </resultMap>
+</mapper>
